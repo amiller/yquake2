@@ -140,6 +140,9 @@ main(int argc, char **argv)
 	/// Do not delay reads on stdin
 	fcntl(fileno(stdin), F_SETFL, fcntl(fileno(stdin), F_GETFL, NULL) | FNDELAY);
 
+	// Don't buffer stdout
+	setvbuf(stdout, NULL, _IONBF, 8192);
+
 	// Initialize the game.
 	// Never returns.
 	Qcommon_Init(argc, argv);

@@ -1,0 +1,38 @@
+# Copyright (C) 2023 Gramine contributors
+# SPDX-License-Identifier: BSD-3-Clause
+
+# yQuake2 server manifest file
+
+loader.entrypoint = "file:{{ gramine.libos }}"
+libos.entrypoint = "/quake/q2ded"
+loader.log_level = "{{ log_level }}"
+loader.uid = 1
+
+loader.env.LD_LIBRARY_PATH = "/lib"
+
+fs.start_dir = "/quake/"
+
+fs.mounts = [
+  { path = "/lib", uri = "file:{{ gramine.runtimedir() }}" },
+  { path = "/quake/q2ded", uri = "file:release/q2ded" },
+  { path = "/quake/baseq2/autoexec.cfg", uri = "file:autoexec.cfg" },
+  { path = "/quake/baseq2/game.so", uri = "file:release/baseq2/game.so" },
+  { path = "/quake/baseq2/scrnshot", uri = "file:baseq2/scrnshot/" },
+  { path = "/quake/baseq2/save", uri = "file:baseq2/save/" },
+  { path = "/quake/baseq2/pak0.pak", uri = "file:baseq2/pak0.pak" },
+  { path = "/quake/baseq2/pak1.pak", uri = "file:baseq2/pak1.pak" },
+  { path = "/quake/baseq2/pak2.pak", uri = "file:baseq2/pak2.pak" },
+  { path = "/quake/baseq2/pak3.pak", uri = "file:baseq2/pak3.pak" },
+]
+
+sgx.debug = false
+sgx.edmm_enable = {{ 'true' if env.get('EDMM', '0') == '1' else 'false' }}
+
+sgx.trusted_files = [
+  "file:{{ gramine.libos }}",
+  "file:release/",
+  "file:release/",
+  "file:baseq2/",
+  "file:autoexec.cfg",
+  "file:{{ gramine.runtimedir() }}/",
+]
